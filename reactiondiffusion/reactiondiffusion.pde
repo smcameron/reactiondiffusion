@@ -39,6 +39,30 @@ float delta_t = 1.00;
 /* convolution matrix */
 float [][] conv;
 
+void add_spot(int c, int x, int y)
+{
+	int i, j, tx, ty;
+
+	for (i = x - 3; i <= x + 3; i++) {
+		tx = i;
+		if (tx < 0) {
+			tx = 0;
+		} else if (tx > xdim - 1) {
+			tx = xdim - 1;
+		}
+		for (j = y - 3; j <= y + 3; j++) {
+			ty = j;
+			if (ty < 0) {
+				ty = 0;
+			} else if (ty > ydim - 1) {
+				ty = ydim - 1;
+			}
+			a[c][tx][ty] = 1.0;
+			b[c][tx][ty] = 1.0;
+		}
+	}
+}
+
 void initialize(int c)
 {
 	int x, y;
@@ -50,13 +74,9 @@ void initialize(int c)
 		}
 	}
 
-	for (x = xdim / 2 - 5; x < xdim / 2 + 5; x++) {
-		for (y = ydim / 2 - 5; y < ydim / 2 + 5; y++) {
-			a[c][x][y] = 1.0;
-			b[c][x][y] = 1.0;
-		}
-	}
-
+	add_spot(c, xdim / 2, ydim / 2);
+	add_spot(c, xdim / 3, ydim / 2);
+	add_spot(c, 2 * xdim / 3, ydim / 3);
 }
 
 void setup()
